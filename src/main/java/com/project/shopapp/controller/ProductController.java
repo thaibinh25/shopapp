@@ -14,6 +14,7 @@ import com.project.shopapp.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -218,30 +220,37 @@ public class ProductController {
     }*/
 
     @GetMapping("/images/{imageName:.+}")
-    public ResponseEntity<byte[]> viewImage(@PathVariable String imageName) {
+    public ResponseEntity<StreamingResponseBody> streamImage(@PathVariable String imageName) {
         try {
-            java.nio.file.Path imagePath = Paths.get("uploads", imageName);
-            if (!Files.exists(imagePath)) {
-                imagePath = Paths.get("uploads", "notfound.jpeg");
+            ClassPathResource imgFile = new ClassPathResource("static/images/" + imageName);
+
+            if (!imgFile.exists()) {
+                imgFile = new ClassPathResource("static/images/notfound.jpeg"); // ảnh mặc định nếu không có
             }
 
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-            String contentType = Files.probeContentType(imagePath);
-            if (contentType == null) {
-                contentType = "image/jpeg";
-            }
+            InputStream inputStream = imgFile.getInputStream();
+            String contentType = URLConnection.guessContentTypeFromStream(inputStream);
+            if (contentType == null) contentType = "image/jpeg";
+
+            StreamingResponseBody stream = outputStream -> {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                inputStream.close();
+            };
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType(contentType));
-            headers.set("Access-Control-Allow-Origin", "*");
-            headers.set("Content-Disposition", "inline");
-            headers.setContentLength(imageBytes.length);
+            headers.set("Content-Disposition", "inline; filename=\"" + imageName + "\"");
 
-            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+            return new ResponseEntity<>(stream, headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
 
