@@ -19,10 +19,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -221,37 +218,26 @@ public class ProductController {
     }*/
 
     @GetMapping("/images/{imageName:.+}")
-    public ResponseEntity<StreamingResponseBody> streamImage(@PathVariable String imageName) {
+    public ResponseEntity<byte[]> viewImage(@PathVariable String imageName) {
         try {
             java.nio.file.Path imagePath = Paths.get("uploads", imageName);
             if (!Files.exists(imagePath)) {
                 imagePath = Paths.get("uploads", "notfound.jpeg");
             }
 
+            byte[] imageBytes = Files.readAllBytes(imagePath);
             String contentType = Files.probeContentType(imagePath);
-            if (contentType == null || contentType.isBlank()) {
+            if (contentType == null) {
                 contentType = "image/jpeg";
             }
 
-            InputStream inputStream = Files.newInputStream(imagePath);
-            StreamingResponseBody stream = outputStream -> {
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-                inputStream.close();
-            };
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType(contentType));
-            headers.setContentLength(Files.size(imagePath)); // ❗ cực kỳ quan trọng với Safari
-            headers.set("Content-Disposition", "inline; filename=\"" + imagePath.getFileName().toString() + "\"");
             headers.set("Access-Control-Allow-Origin", "*");
-            headers.setCacheControl("no-cache");
+            headers.set("Content-Disposition", "inline");
+            headers.setContentLength(imageBytes.length);
 
-            return new ResponseEntity<>(stream, headers, HttpStatus.OK);
-
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.notFound().build();
         }
