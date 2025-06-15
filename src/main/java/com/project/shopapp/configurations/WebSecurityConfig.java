@@ -162,7 +162,7 @@ public class WebSecurityConfig {
 
 
                              .requestMatchers("/ws/**").permitAll() // Cho phép WebSocket
-
+                             .requestMatchers("/wss/**").permitAll() // Cho phép WebSocket
 
                              .requestMatchers(HttpMethod.POST, String.format("%s/payments/create-payment-intent", apiPrefix)).hasRole(Role.USER)
 

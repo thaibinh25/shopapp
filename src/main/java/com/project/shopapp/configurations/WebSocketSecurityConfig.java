@@ -15,6 +15,7 @@ public class WebSocketSecurityConfig {
     public SecurityFilterChain webSocketSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/ws/**") // áp dụng riêng cho /ws/**
+                .securityMatcher("/wss/**") // áp dụng riêng cho /wss/**
                 .authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable());

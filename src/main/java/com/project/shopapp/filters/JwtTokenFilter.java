@@ -125,7 +125,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.startsWith("/ws") || path.startsWith("/api/v1/products/images/")
+        return path.startsWith("/ws") || path.startsWith("/wss") || path.startsWith("/api/v1/products/images/")
                 || path.startsWith("/api/admin/rename-files");
     }
 }
