@@ -82,4 +82,4 @@ stripe:
 google:
   client-id: 582191794962-ksv61g67eppduhcmi5gp8s73v9chshm2.apps.googleusercontent.com
   client-secret: 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
-  redirect-uri: https://0378-240b-c010-640-8b1-4899-3cb5-3937-bbc.ngrok-free.app/oauth2/callback
+  redirect-uri: https://7184-240b-c010-674-186f-99c3-9954-b254-6caa.ngrok-free.app/oauth2/callback
