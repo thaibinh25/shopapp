@@ -10,6 +10,7 @@ import com.project.shopapp.response.ProductListResponse;
 import com.project.shopapp.response.ProductResponse;
 import com.project.shopapp.response.ResponseObject;
 import com.project.shopapp.services.ProductService;
+import com.project.shopapp.services.S3Service;
 import com.project.shopapp.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -53,6 +54,7 @@ public class ProductController {
     private final ProductService productService;
     private final LocalizationUtils localizationUtils;
     private final ModelMapper modelMapper;
+    private final S3Service s3Service;
 
     @GetMapping
     public ResponseEntity<ProductListResponse> getProducts(
@@ -162,16 +164,25 @@ public class ProductController {
                             .body(localizationUtils.getLocalizedMessage(MessageKeys.UPLOAD_IMAGES_FILE_MUST_BE_IMAGE));
                 }
                 //Lưu file và cập nhật thumbnail trong DTO
-                String filename = storeFile(file);//Thay thế hàm này với code của bạn để lưu file
+               // String filename = storeFile(file);//Thay thế hàm này với code của bạn để lưu file
                 //Lưu vào đối tượng product trong DB => sẽ làm sau
                 //lưu vào bảng product_images
-                ProductImage productImage = productService.createProductImage(
+                /*ProductImage productImage = productService.createProductImage(
                         existingProduct.getId(),
                         ProductImageDTO.builder()
                                 .imageUrl(filename)
+                                .build());*/
+                // UPLOAD LÊN S3
+                String imageUrl = s3Service.uploadFile(file);
+
+                // TẠO BẢN GHI ẢNH VÀO DB
+                ProductImage productImage = productService.createProductImage(
+                        existingProduct.getId(),
+                        ProductImageDTO.builder()
+                                .imageUrl(imageUrl)
                                 .build());
 
-                if (productImages.isEmpty() &&
+                /*if (productImages.isEmpty() &&
                         (existingProduct.getThumbnail() == null)||
                             existingProduct.getThumbnail().trim().isEmpty() ) { // Ảnh đầu tiên
 
@@ -180,6 +191,15 @@ public class ProductController {
                 }
                 productImages.add(productImage);
 
+            }*/
+                // Nếu là ảnh đầu tiên & chưa có thumbnail, đặt thumbnail cho sản phẩm
+                if (productImages.isEmpty() &&
+                        (existingProduct.getThumbnail() == null || existingProduct.getThumbnail().trim().isEmpty())) {
+                    existingProduct.setThumbnail(imageUrl);
+                    productService.save(existingProduct);
+                }
+
+                productImages.add(productImage);
             }
 
             return ResponseEntity.ok().body(productImages);
@@ -191,33 +211,7 @@ public class ProductController {
 
     }
 
-    /*@GetMapping("/images/{imageName:.+}")
-    public ResponseEntity<?> viewImage(@PathVariable String imageName){
-        try{
-            java.nio.file.Path imagePatch = Paths.get("uploads/"+ imageName);
-            UrlResource resource = new UrlResource(imagePatch.toUri());
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Access-Control-Allow-Origin", "*"); // 👈 rất quan trọng
-            headers.add("Cache-Control", "no-cache");
 
-            String mimeType = Files.probeContentType(imagePatch);
-            if (mimeType == null) mimeType = "application/octet-stream";
-
-            if (resource.exists()){
-                return ResponseEntity.ok()
-                        .contentType(parseMediaType(mimeType))
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + imageName + "\"")
-                        .body(resource);
-            }else{
-                return ResponseEntity.ok()
-                        .contentType(parseMediaType(mimeType))
-                        .body(new UrlResource(Paths.get("uploads/notfound.jpeg").toUri()));
-                //return ResponseEntity.notFound().build();
-            }
-        }catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
-    }*/
 
     @GetMapping("/images/{imageName:.+}")
     public ResponseEntity<StreamingResponseBody> streamImage(@PathVariable String imageName) {

@@ -157,6 +157,13 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.25.28</version> <!-- Ví dụ version mới nhất hiện tại -->
+		</dependency>
+
+
 
 	</dependencies>
 

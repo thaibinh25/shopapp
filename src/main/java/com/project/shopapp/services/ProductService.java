@@ -15,11 +15,14 @@ import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -30,10 +33,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService{
+    private final S3Client s3Client;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
     private final BrandRepository brandRepository;
+
+    @Value("${aws.s3.bucket}")
+    private String bucket;
 
 
     public Product save(Product product) {
@@ -53,7 +60,7 @@ public class ProductService implements IProductService{
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
-                .thumbnail(productDTO.getThumbnail())
+                .thumbnail(null)
                 .description(productDTO.getDescription())
                 .category(existingCategory)
                 .brand(exsistingBrand)
@@ -167,4 +174,20 @@ public class ProductService implements IProductService{
         }
         return productImageRepository.save(newProductImage);
     }
+
+    public void deleteProductImage(Long imageId) throws DataNotFoundException {
+        ProductImage image = productImageRepository.findById(imageId)
+                .orElseThrow(() -> new DataNotFoundException("Cannot find image with id: " + imageId));
+
+        // Xoá file trên S3 (nếu muốn xoá thật)
+        String key = image.getImageUrl().replace("https://"+ bucket +".s3.amazonaws.com/", "");
+        s3Client.deleteObject(DeleteObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build());
+
+        // Xoá bản ghi DB
+        productImageRepository.delete(image);
+    }
+
 }
