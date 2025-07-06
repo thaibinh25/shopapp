@@ -51,7 +51,10 @@ public class WebSecurityConfig {
                 "https://57f7-240b-c010-640-8b1-4899-3cb5-3937-bbc.ngrok-free.app"
         ));*/
         // ✅ CHO PHÉP ORIGIN NGROK
-        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedOrigins(List.of(
+                "https://thaibinhshop.duckdns.org",
+                "https://7184-240b-c010-674-186f-99c3-9954-b254-6caa.ngrok-free.app"
+        ));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
