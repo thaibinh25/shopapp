@@ -175,19 +175,6 @@ public class ProductService implements IProductService{
         return productImageRepository.save(newProductImage);
     }
 
-    public void deleteProductImage(Long imageId) throws DataNotFoundException {
-        ProductImage image = productImageRepository.findById(imageId)
-                .orElseThrow(() -> new DataNotFoundException("Cannot find image with id: " + imageId));
 
-        // Xoá file trên S3 (nếu muốn xoá thật)
-        String key = image.getImageUrl().replace("https://"+ bucket +".s3.amazonaws.com/", "");
-        s3Client.deleteObject(DeleteObjectRequest.builder()
-                .bucket(bucket)
-                .key(key)
-                .build());
-
-        // Xoá bản ghi DB
-        productImageRepository.delete(image);
-    }
 
 }

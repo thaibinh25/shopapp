@@ -6,7 +6,13 @@ import com.project.shopapp.models.ProductImage;
 import com.project.shopapp.repositories.ProductImageRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+
+
+
 
 import java.util.List;
 
@@ -16,6 +22,10 @@ public class ProductImageService implements IproductImageService{
 
     private final ProductImageRepository productImageRepository;
     private final ProductRepository productRepository;
+    private final S3Client s3Client;
+    @Value("${aws.s3.bucket}")
+    private String bucket;
+
     @Override
     public ProductImage getById(Long id) {
         return productImageRepository.findById(id).orElseThrow(null);
@@ -26,6 +36,13 @@ public class ProductImageService implements IproductImageService{
 
         ProductImage image = productImageRepository.findById(id).orElseThrow(()->
                 new DataNotFoundException("cannot find image!!!"));
+
+        // Xoá file trên S3 (nếu muốn xoá thật)
+        String key = image.getImageUrl().replace("https://"+ bucket +".s3.amazonaws.com/", "");
+        s3Client.deleteObject(DeleteObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build());
 
         if (image != null) {
             Product product = image.getProduct();
@@ -45,4 +62,7 @@ public class ProductImageService implements IproductImageService{
         }
 
     }
+
+
+
 }
