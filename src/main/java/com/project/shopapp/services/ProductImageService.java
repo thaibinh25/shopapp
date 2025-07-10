@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-
-
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 
 import java.util.List;
@@ -39,10 +38,15 @@ public class ProductImageService implements IproductImageService{
 
         // Xoá file trên S3 (nếu muốn xoá thật)
         String key = image.getImageUrl().replace("https://"+ bucket +".s3.amazonaws.com/", "");
-        s3Client.deleteObject(DeleteObjectRequest.builder()
-                .bucket(bucket)
-                .key(key)
-                .build());
+        try {
+            s3Client.deleteObject(DeleteObjectRequest.builder()
+                    .bucket(bucket)
+                    .key(key)
+                    .build());
+        } catch (S3Exception e) {
+            System.err.println("Failed to delete from S3: " + e.awsErrorDetails().errorMessage());
+            throw e;
+        }
 
         if (image != null) {
             Product product = image.getProduct();
