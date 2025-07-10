@@ -23,7 +23,7 @@ public class S3Service {
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
-                .acl("public-read")
+                //.acl("public-read")
                 .contentType(file.getContentType())
                 .build();
 
