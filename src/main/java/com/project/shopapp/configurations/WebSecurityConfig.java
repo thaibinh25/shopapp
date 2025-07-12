@@ -49,7 +49,7 @@ public class WebSecurityConfig {
         // ✅ CHO PHÉP ORIGIN NGROK
         config.setAllowedOrigins(List.of(
                 "https://thaibinhshop.duckdns.org",
-                "https://15241752337a.ngrok-free.app"
+                "https://ffc5791377bf.ngrok-free.app"
         ));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
