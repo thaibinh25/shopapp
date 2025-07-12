@@ -45,15 +45,11 @@ public class WebSecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        /*config.setAllowedOrigins(List.of(
-                "http://localhost:4200",
-                "https://0378-240b-c010-640-8b1-4899-3cb5-3937-bbc.ngrok-free.app",
-                "https://57f7-240b-c010-640-8b1-4899-3cb5-3937-bbc.ngrok-free.app"
-        ));*/
+
         // ✅ CHO PHÉP ORIGIN NGROK
         config.setAllowedOrigins(List.of(
                 "https://thaibinhshop.duckdns.org",
-                "https://7184-240b-c010-674-186f-99c3-9954-b254-6caa.ngrok-free.app"
+                "https://15241752337a.ngrok-free.app"
         ));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
