@@ -61,6 +61,10 @@ public class ProductService implements IProductService{
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .thumbnail(null)
+                .oldPrice(productDTO.getOldPrice())
+                .badge(productDTO.getBadge())
+                .rating(0.0f)
+                .reviews(0)
                 .description(productDTO.getDescription())
                 .category(existingCategory)
                 .brand(exsistingBrand)
@@ -94,11 +98,22 @@ public class ProductService implements IProductService{
             Long brandId,
             Double minPrice,
             Double maxPrice,
+            Float minRating,
+            String badge,
             PageRequest pageRequest) {
         //Lấy danh sách sản phẩm theo trang (page) và giới hạn (limit)
         log.info("keyword={}, categoryId={}, brandId={}, minPrice={}, maxPrice={}",
                 keyword, categoryId, brandId, minPrice, maxPrice);
-        Page<Product> productPage = productRepository.searchProducts(keyword,categoryId,brandId, minPrice, maxPrice,pageRequest);
+        Page<Product> productPage = productRepository
+                .searchProducts(
+                        keyword,
+                        categoryId,
+                        brandId,
+                        minPrice,
+                        maxPrice,
+                        minRating,
+                        badge,
+                        pageRequest);
         return productPage.map(ProductResponse::fromProduct);
 
     }
@@ -116,6 +131,8 @@ public class ProductService implements IProductService{
             existingProduct.setPrice(productDTO.getPrice());
             //existingProduct.setThumbnail(productDTO.getThumbnail());
             existingProduct.setDescription(productDTO.getDescription());
+            existingProduct.setBadge(productDTO.getBadge());
+            existingProduct.setOldPrice(productDTO.getOldPrice());
 
             // --- Thumbnail Handling ---
             String newThumbnail = productDTO.getThumbnail();
@@ -175,6 +192,8 @@ public class ProductService implements IProductService{
         return productImageRepository.save(newProductImage);
     }
 
-
+    public List<String> getDistinctBadges() {
+        return productRepository.findDistinctBadges();
+    }
 
 }

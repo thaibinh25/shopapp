@@ -1,0 +1,166 @@
+2025-07-13 23:11:25 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2025-07-13 23:11:25 [main] INFO  c.project.shopapp.ShopappApplication - Starting ShopappApplication using Java 17.0.14 with PID 33557 (/Users/tranthaibinh/Documents/SHOPAPP_00/shopapp/target/classes started by tranthaibinh in /Users/tranthaibinh/Documents/SHOPAPP_00/shopapp)
+2025-07-13 23:11:25 [main] INFO  c.project.shopapp.ShopappApplication - No active profile set, falling back to 1 default profile: "default"
+2025-07-13 23:11:25 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-13 23:11:25 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 39 ms. Found 10 JPA repository interfaces.
+2025-07-13 23:11:25 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8088 (http)
+2025-07-13 23:11:25 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8088"]
+2025-07-13 23:11:25 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-07-13 23:11:25 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2025-07-13 23:11:26 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-07-13 23:11:26 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 829 ms
+2025-07-13 23:11:26 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-13 23:11:26 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.9.Final
+2025-07-13 23:11:26 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-07-13 23:11:26 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-13 23:11:26 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-07-13 23:11:28 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@43ab9ae9
+2025-07-13 23:11:28 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-07-13 23:11:28 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-13 23:11:28 [main] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-07-13 23:11:29 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-13 23:11:29 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-13 23:11:29 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-07-13 23:11:29 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-13 23:11:30 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7e9e125f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6cf4325b, org.springframework.security.web.context.SecurityContextHolderFilter@5d388611, org.springframework.security.web.header.HeaderWriterFilter@3e900cf4, org.springframework.web.filter.CorsFilter@7cba8293, org.springframework.security.web.authentication.logout.LogoutFilter@4f9a0139, com.project.shopapp.filters.JwtTokenFilter@5a75bad4, com.project.shopapp.filters.JwtTokenFilter@5a75bad4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4bc88ccb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1081906a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2f6b60ee, org.springframework.security.web.access.ExceptionTranslationFilter@52891a77, org.springframework.security.web.access.intercept.AuthorizationFilter@10c04710]
+2025-07-13 23:11:30 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure Or [Mvc [pattern='/wss/**']] with [org.springframework.security.web.session.DisableEncodeUrlFilter@4790a29a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@38421084, org.springframework.security.web.context.SecurityContextHolderFilter@6bd5101f, org.springframework.security.web.header.HeaderWriterFilter@73536bcc, org.springframework.security.web.authentication.logout.LogoutFilter@69d2cffb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5ca64b79, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@422179c7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@32e8c3c3, org.springframework.security.web.access.ExceptionTranslationFilter@5119e01a, org.springframework.security.web.access.intercept.AuthorizationFilter@4e670245]
+2025-07-13 23:11:30 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Deferred [Mvc [pattern='/api/v1/products/images/**'], Ant [pattern='/api/v1/products/images/**']]. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2025-07-13 23:11:30 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Deferred [Mvc [pattern='/api/v1/products/images/**'], Ant [pattern='/api/v1/products/images/**']]
+2025-07-13 23:11:30 [main] WARN  o.s.s.c.a.web.builders.WebSecurity - 
+
+********************************************************************
+**********        Security debugging is enabled.       *************
+**********    This may include sensitive information.  *************
+**********      Do not use in a production system!     *************
+********************************************************************
+
+
+2025-07-13 23:11:30 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8088"]
+2025-07-13 23:11:30 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8088 (http) with context path ''
+2025-07-13 23:11:30 [main] INFO  c.project.shopapp.ShopappApplication - Started ShopappApplication in 5.601 seconds (process running for 5.934)
+2025-07-13 23:12:42 [http-nio-8088-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-13 23:12:42 [http-nio-8088-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-07-13 23:12:42 [http-nio-8088-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-07-13 23:12:42 [http-nio-8088-exec-2] INFO  Spring Security Debugger - 
+
+************************************************************
+
+Request received for GET '/api/v1/products?page=0&limit=10&category_id=&brand_id=1&minPrice=&maxPrice=&keyword=&minRating=5&badge':
+
+org.apache.catalina.connector.RequestFacade@4c5e8b4a
+
+servletPath:/api/v1/products
+pathInfo:null
+headers: 
+user-agent: PostmanRuntime/7.44.1
+accept: */*
+postman-token: 39aa0581-e7aa-4b52-b793-67d54c0e3fdf
+host: localhost:8088
+accept-encoding: gzip, deflate, br
+connection: keep-alive
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  CorsFilter
+  LogoutFilter
+  JwtTokenFilter
+  JwtTokenFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+2025-07-13 23:12:42 [http-nio-8088-exec-2] INFO  c.p.shopapp.services.ProductService - keyword=, categoryId=0, brandId=1, minPrice=null, maxPrice=null
+2025-07-13 23:12:49 [http-nio-8088-exec-3] INFO  Spring Security Debugger - 
+
+************************************************************
+
+Request received for GET '/api/v1/products?page=0&limit=10&category_id=&brand_id=1&minPrice=&maxPrice=&keyword=&minRating=4&badge':
+
+org.apache.catalina.connector.RequestFacade@422471fe
+
+servletPath:/api/v1/products
+pathInfo:null
+headers: 
+user-agent: PostmanRuntime/7.44.1
+accept: */*
+postman-token: 04ccb5a2-b066-46e2-820e-a37c7c20a043
+host: localhost:8088
+accept-encoding: gzip, deflate, br
+connection: keep-alive
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  CorsFilter
+  LogoutFilter
+  JwtTokenFilter
+  JwtTokenFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+2025-07-13 23:12:49 [http-nio-8088-exec-3] INFO  c.p.shopapp.services.ProductService - keyword=, categoryId=0, brandId=1, minPrice=null, maxPrice=null
+2025-07-13 23:13:13 [http-nio-8088-exec-4] INFO  Spring Security Debugger - 
+
+************************************************************
+
+Request received for GET '/api/v1/products?page=0&limit=10&category_id=&brand_id=1&minPrice=&maxPrice=&keyword=&minRating=4&badge=%E4%BA%BA%E6%B0%97':
+
+org.apache.catalina.connector.RequestFacade@143fc553
+
+servletPath:/api/v1/products
+pathInfo:null
+headers: 
+user-agent: PostmanRuntime/7.44.1
+accept: */*
+postman-token: 3ec03a90-faaf-429e-8d7b-0c2bc149be1f
+host: localhost:8088
+accept-encoding: gzip, deflate, br
+connection: keep-alive
+
+
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextHolderFilter
+  HeaderWriterFilter
+  CorsFilter
+  LogoutFilter
+  JwtTokenFilter
+  JwtTokenFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+
+
+************************************************************
+
+
+2025-07-13 23:13:13 [http-nio-8088-exec-4] INFO  c.p.shopapp.services.ProductService - keyword=, categoryId=0, brandId=1, minPrice=null, maxPrice=null
+2025-07-13 23:13:28 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-13 23:13:28 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-07-13 23:13:28 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

@@ -63,6 +63,8 @@ public class ProductController {
             @RequestParam(defaultValue = "0",name = "brand_id") Long brandId,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Float minRating,
+            @RequestParam(required = false) String badge,
             @RequestParam(defaultValue = "0")  int page,
             @RequestParam(defaultValue = "15") int limit
     ) {
@@ -73,7 +75,7 @@ public class ProductController {
                 //Sort.by("createdAt").descending());
                 Sort.by("id").ascending());
 
-        Page<ProductResponse> productPage = productService.getAllProducts(keyword,categoryId,brandId,minPrice,maxPrice,pageRequest);
+        Page<ProductResponse> productPage = productService.getAllProducts(keyword,categoryId,brandId,minPrice,maxPrice,minRating, badge,pageRequest);
         //Lấy tổng số trang
         int totalPage = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();
@@ -247,32 +249,6 @@ public class ProductController {
 
 
 
-
-
-    private String storeFile(MultipartFile file) throws IOException {
-        if (!IsImageFile(file) || file.getOriginalFilename() == null){
-            throw  new IOException("Invailid image format");
-        }
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        //Thêm UUID vào trước ten file để đảm bảo tên file là duy nhất
-        String uniqueFilename = UUID.randomUUID().toString()+ "_" + filename;
-        //Đường dẫn đến thư mục mà bạn muốn lưu file
-        java.nio.file.Path uploadDir = Paths.get("uploads");
-        if (!Files.exists(uploadDir)){
-            Files.createDirectories(uploadDir);
-        }
-        //Đường dẫn đầy đủ đến file
-        java.nio.file.Path destination = Paths.get(uploadDir.toString(),uniqueFilename);
-        //Sao chép file vào thư mục đích
-        Files.copy(file.getInputStream(),destination, StandardCopyOption.REPLACE_EXISTING);
-        return uniqueFilename;
-    }
-
-    private boolean IsImageFile(MultipartFile file){
-        String contentType = file.getContentType();
-        return contentType != null && contentType.startsWith("image/");
-    }
-
     @PutMapping("/{id}")
     public  ResponseEntity<?> updateProduct(
             @PathVariable long id,
@@ -323,6 +299,37 @@ public class ProductController {
         }
         return ResponseEntity.ok("Fake Products created successfully");
     }
+
+    @GetMapping("/badges")
+    public ResponseEntity<List<String>> getAvailableBadges() {
+        List<String> badges = productService.getDistinctBadges();
+        return ResponseEntity.ok(badges);
+    }
+/*
+    private String storeFile(MultipartFile file) throws IOException {
+        if (!IsImageFile(file) || file.getOriginalFilename() == null){
+            throw  new IOException("Invailid image format");
+        }
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        //Thêm UUID vào trước ten file để đảm bảo tên file là duy nhất
+        String uniqueFilename = UUID.randomUUID().toString()+ "_" + filename;
+        //Đường dẫn đến thư mục mà bạn muốn lưu file
+        java.nio.file.Path uploadDir = Paths.get("uploads");
+        if (!Files.exists(uploadDir)){
+            Files.createDirectories(uploadDir);
+        }
+        //Đường dẫn đầy đủ đến file
+        java.nio.file.Path destination = Paths.get(uploadDir.toString(),uniqueFilename);
+        //Sao chép file vào thư mục đích
+        Files.copy(file.getInputStream(),destination, StandardCopyOption.REPLACE_EXISTING);
+        return uniqueFilename;
+    }
+
+    private boolean IsImageFile(MultipartFile file){
+        String contentType = file.getContentType();
+        return contentType != null && contentType.startsWith("image/");
+    }
+*/
 
 }
 

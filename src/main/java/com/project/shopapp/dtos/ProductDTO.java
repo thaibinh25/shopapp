@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 
 @Getter
 @Setter
@@ -21,6 +23,10 @@ public class ProductDTO {
     private Float price;
     private String thumbnail;
     private String description;
+
+    private BigDecimal oldPrice;
+    private String badge;
+
 
     @JsonProperty("category_id")
     private Long categoryId;

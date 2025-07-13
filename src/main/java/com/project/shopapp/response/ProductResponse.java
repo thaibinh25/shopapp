@@ -6,6 +6,7 @@ import com.project.shopapp.models.Product;
 import com.project.shopapp.models.ProductImage;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,11 @@ public class ProductResponse extends BaseResponse {
     @JsonProperty("product_images")
     private List<ProductImageDTO> productImages = new ArrayList<>();
 
+    private BigDecimal oldPrice;
+    private String badge;
+    private Float rating;
+    private Integer reviews;
+
     @JsonProperty("category_id")
     private Long categoryId;
     @JsonProperty("brand_id")
@@ -38,6 +44,10 @@ public class ProductResponse extends BaseResponse {
                 .price(product.getPrice())
                 .thumbnail(product.getThumbnail())
                 .description(product.getDescription())
+                .oldPrice(product.getOldPrice())
+                .badge(product.getBadge())
+                .reviews(product.getReviews())
+                .rating(product.getRating())
                 .categoryId(product.getCategory().getId())
                 .brandId(product.getBrand().getId())
                 .productImages(

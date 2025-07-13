@@ -22,6 +22,8 @@ public interface IProductService {
                                          Long brandId,
                                          Double minPrice,
                                          Double maxPrice,
+                                         Float minRating,
+                                         String badge,
                                          PageRequest pageRequest);
 
     Product updateProduct(long id, ProductDTO productDTO) throws Exception;

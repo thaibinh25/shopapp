@@ -24,13 +24,17 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "   OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "   OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
             "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
-            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)" +
+            "AND (:minRating IS NULL OR p.rating >= :minRating) " +
+            "AND (:badge IS NULL OR :badge = '' OR p.badge = :badge)")
     Page<Product> searchProducts
             (@Param("keyword") String keyword,
              @Param("categoryId") Long categoryId,
              @Param("brandId") Long brandId,
              @Param("minPrice") Double minPrice,
              @Param("maxPrice") Double maxPrice,
+             @Param("minRating") Float minRating,
+             @Param("badge") String badge,
              Pageable pageable);
 
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImages WHERE p.id = :productId")
@@ -38,4 +42,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     @Query("SELECT p FROM Product p WHERE p.id IN :productIds")
     List<Product> findProductsByIds(@Param("productIds") List<Long> productIds);
+
+    @Query("SELECT DISTINCT p.badge FROM Product p WHERE p.badge IS NOT NULL AND p.badge <> ''")
+    List<String> findDistinctBadges();
 }
