@@ -6,6 +6,7 @@ import com.project.shopapp.dtos.*;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.models.ProductImage;
 
+import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.response.ProductListResponse;
 import com.project.shopapp.response.ProductResponse;
 import com.project.shopapp.response.ResponseObject;
@@ -52,9 +53,20 @@ import static org.springframework.http.MediaType.parseMediaType;
 public class ProductController {
     private static final org.slf4j.Logger logger =  LoggerFactory.getLogger(ProductController.class);
     private final ProductService productService;
+    private final ProductRepository productRepository;
     private final LocalizationUtils localizationUtils;
     private final ModelMapper modelMapper;
     private final S3Service s3Service;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductResponse> responses = products.stream()
+                .map(ProductResponse::fromProduct)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
+
 
     @GetMapping
     public ResponseEntity<ProductListResponse> getProducts(
