@@ -65,15 +65,22 @@ public class ProductController {
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Float minRating,
             @RequestParam(required = false) String badge,
+            @RequestParam(defaultValue = "newest") String sort,
             @RequestParam(defaultValue = "0")  int page,
             @RequestParam(defaultValue = "15") int limit
     ) {
 
+        Sort sorting = switch (sort) {
+            case "price-low"   -> Sort.by("price").ascending();
+            case "price-high"  -> Sort.by("price").descending();
+            case "rating"      -> Sort.by("rating").descending();
+            case "popular"     -> Sort.by("soldQuantity").descending();
+            default            -> Sort.by("createdAt").descending();
+        };
+
+
         //tạo pageable từ thôgn tin trang và giới hạn
-        PageRequest pageRequest = PageRequest.of(
-                page, limit,
-                //Sort.by("createdAt").descending());
-                Sort.by("id").ascending());
+        PageRequest pageRequest = PageRequest.of(page, limit, sorting);
 
         Page<ProductResponse> productPage = productService.getAllProducts(
                 keyword,
