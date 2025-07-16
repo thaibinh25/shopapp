@@ -17,14 +17,16 @@ public interface IProductService {
 
     List<ProductResponse> findProductsByIds(List<Long> productIds);
 
-    Page<ProductResponse> getAllProducts(String keyword,
-                                         Long categoryId,
-                                         Long brandId,
-                                         Double minPrice,
-                                         Double maxPrice,
-                                         Float minRating,
-                                         String badge,
-                                         PageRequest pageRequest);
+
+    Page<ProductResponse> getAllProducts(
+            String keyword,
+            List<Long> categoryIds,
+            List<Long> brandIds,
+            Double minPrice,
+            Double maxPrice,
+            Float minRating,
+            String badge,
+            PageRequest pageRequest);
 
     Product updateProduct(long id, ProductDTO productDTO) throws Exception;
 

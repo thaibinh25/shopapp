@@ -59,8 +59,8 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<ProductListResponse> getProducts(
             @RequestParam(defaultValue = "") String keyword,
-            @RequestParam(defaultValue = "0",name = "category_id") Long categoryId,
-            @RequestParam(defaultValue = "0",name = "brand_id") Long brandId,
+            @RequestParam(name = "category_id", required = false) List<Long> categoryIds,
+            @RequestParam(name = "brand_id", required = false) List<Long> brandIds,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Float minRating,
@@ -75,7 +75,15 @@ public class ProductController {
                 //Sort.by("createdAt").descending());
                 Sort.by("id").ascending());
 
-        Page<ProductResponse> productPage = productService.getAllProducts(keyword,categoryId,brandId,minPrice,maxPrice,minRating, badge,pageRequest);
+        Page<ProductResponse> productPage = productService.getAllProducts(
+                keyword,
+                categoryIds,
+                brandIds,
+                minPrice,
+                maxPrice,
+                minRating,
+                badge,
+                pageRequest);
         //Lấy tổng số trang
         int totalPage = productPage.getTotalPages();
         List<ProductResponse> products = productPage.getContent();

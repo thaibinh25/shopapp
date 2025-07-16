@@ -18,24 +18,22 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Page<Product> findAll(Pageable pageable);
 
     @Query("SELECT p FROM Product p WHERE " +
-            "(:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) " +
-            "AND (:brandId IS NULL OR :brandId = 0 OR p.brand.id = :brandId) " +
-            "AND (:keyword IS NULL OR :keyword = '' " +
-            "   OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "   OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
-            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
-            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)" +
-            "AND (:minRating IS NULL OR p.rating >= :minRating) " +
-            "AND (:badge IS NULL OR :badge = '' OR p.badge = :badge)")
-    Page<Product> searchProducts
-            (@Param("keyword") String keyword,
-             @Param("categoryId") Long categoryId,
-             @Param("brandId") Long brandId,
-             @Param("minPrice") Double minPrice,
-             @Param("maxPrice") Double maxPrice,
-             @Param("minRating") Float minRating,
-             @Param("badge") String badge,
-             Pageable pageable);
+            "(:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))) AND " +
+            "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
+            "(:maxPrice IS NULL OR p.price <= :maxPrice) AND " +
+            "(:minRating IS NULL OR p.rating >= :minRating) AND " +
+            "(:badge IS NULL OR p.badge = :badge) AND " +
+            "(COALESCE(:categoryIds, NULL) IS NULL OR p.category.id IN :categoryIds) AND " +
+            "(COALESCE(:brandIds, NULL) IS NULL OR p.brand.id IN :brandIds)")
+    Page<Product> searchProducts(
+            @Param("keyword") String keyword,
+            @Param("categoryIds") List<Long> categoryIds,
+            @Param("brandIds") List<Long> brandIds,
+            @Param("minPrice") Double minPrice,
+            @Param("maxPrice") Double maxPrice,
+            @Param("minRating") Float minRating,
+            @Param("badge") String badge,
+            Pageable pageable);
 
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImages WHERE p.id = :productId")
     Optional<Product> getDetailProduct(@Param("productId") Long productId);

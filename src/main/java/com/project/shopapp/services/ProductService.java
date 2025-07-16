@@ -16,15 +16,12 @@ import com.project.shopapp.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -94,21 +91,21 @@ public class ProductService implements IProductService{
     @Override
     public Page<ProductResponse> getAllProducts(
             String keyword,
-            Long categoryId,
-            Long brandId,
+            List<Long> categoryIds,
+            List<Long> brandIds,
             Double minPrice,
             Double maxPrice,
             Float minRating,
             String badge,
             PageRequest pageRequest) {
         //Lấy danh sách sản phẩm theo trang (page) và giới hạn (limit)
-        log.info("keyword={}, categoryId={}, brandId={}, minPrice={}, maxPrice={}",
-                keyword, categoryId, brandId, minPrice, maxPrice);
+        log.info("keyword={}, categoryIds={}, brandIds={}, minPrice={}, maxPrice={}",
+                keyword, categoryIds, brandIds, minPrice, maxPrice);
         Page<Product> productPage = productRepository
                 .searchProducts(
                         keyword,
-                        categoryId,
-                        brandId,
+                        categoryIds,
+                        brandIds,
                         minPrice,
                         maxPrice,
                         minRating,
