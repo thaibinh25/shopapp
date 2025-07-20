@@ -8,6 +8,7 @@ import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +23,29 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentController {
     private final StripeService stripeService;
 
     @PostMapping("/create-payment-intent")
-    public ResponseEntity<?> createPaymentIntent(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<?> createPaymentIntent(@RequestBody PaymentRequest paymentRequest) {
         try {
-            Number amountNumber = (Number) request.get("amount");
-            long amount = amountNumber.longValue(); // ✅ ép kiểu an toàn
-            //Long amount = Long.valueOf(request.get("amount").toString());
+            if (paymentRequest == null || paymentRequest.getAmount() == null) {
+                return ResponseEntity.badRequest().body("Thiếu dữ liệu thanh toán.");
+            }
+
+            long amount = paymentRequest.getAmount();
+            if (amount <= 0) {
+                return ResponseEntity.badRequest().body("Số tiền thanh toán không hợp lệ.");
+            }
+
             PaymentIntent intent = stripeService.createPaymentIntent(amount);
-            return ResponseEntity.ok(Map.of("clientSecret", intent.getClientSecret()));
+            return ResponseEntity.ok().body(Map.of("clientSecret", intent.getClientSecret()));
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            log.error("🔥 Lỗi khi tạo PaymentIntent", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi xử lý thanh toán: " + e.getMessage());
         }
     }
-
-
 }
