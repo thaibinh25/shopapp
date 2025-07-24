@@ -17,6 +17,21 @@ public class UpdateUserResponse {
 
     private String address;
 
+    @JsonProperty("zip_code")
+    private String zipCode;
+
+    @JsonProperty("prefecture")
+    private String prefecture;
+
+    @JsonProperty("city")
+    private String city;
+
+    @JsonProperty("address_line1")
+    private String addressLine1;
+
+    @JsonProperty("address_line2")
+    private String addressLine2;
+
     @JsonProperty("date_of_birth")
     private Date dateOfBirth;
 }

@@ -55,6 +55,12 @@ public class OrderService implements IOrderService{
         }
         order.setShippingDate(shippingDate);
         order.setActive(true);
+        //địa chỉ giao hàng
+        order.setZipCode(orderDTO.getZipCode());
+        order.setPrefecture(orderDTO.getPrefecture());
+        order.setCity(orderDTO.getCity());
+        order.setAddressLine1(orderDTO.getAddressLine1());
+        order.setAddressLine2(orderDTO.getAddressLine2());
         //order.setTotalMoney(orderDTO.getTotalMoney());
         orderRepository.save(order);
 

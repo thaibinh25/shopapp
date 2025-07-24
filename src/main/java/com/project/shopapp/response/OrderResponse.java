@@ -34,6 +34,21 @@ public class OrderResponse extends BaseResponse{
 
     @JsonProperty("address")
     private String address;
+    @JsonProperty("zip_code")
+    private String zipCode;
+
+    @JsonProperty("prefecture")
+    private String prefecture;
+
+    @JsonProperty("city")
+    private String city;
+
+    @JsonProperty("address_line1")
+    private String addressLine1;
+
+    @JsonProperty("address_line2")
+    private String addressLine2;
+
 
     @JsonProperty("note")
     private String note;
@@ -78,6 +93,11 @@ public class OrderResponse extends BaseResponse{
                 .phoneNumber(order.getPhoneNumber())
                 .email(order.getEmail())
                 .address(order.getAddress())
+                .zipCode(order.getZipCode())
+                .prefecture(order.getPrefecture())
+                .city(order.getCity())
+                .addressLine1(order.getAddressLine1())
+                .addressLine2(order.getAddressLine2())
                 .note(order.getNote())
                 .orderDate(order.getOrderDate())
                 .status(order.getStatus())

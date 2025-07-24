@@ -60,6 +60,11 @@ public class UserService implements IUserService{
                 .phoneNumber(userDTO.getPhoneNumber())
                 .password(userDTO.getPassword())
                 .address(userDTO.getAddress())
+                .zipCode(userDTO.getZipCode())
+                .prefecture(userDTO.getPrefecture())
+                .city(userDTO.getCity())
+                .addressLine1(userDTO.getAddressLine1())
+                .addressLine2(userDTO.getAddressLine2())
                 .dateOfBirth(userDTO.getDateOfBirth())
                 .facebookAccountId(userDTO.getFacebookAccountId())
                 .googleAccountId(userDTO.getGoogleAccountId())
@@ -151,6 +156,11 @@ public class UserService implements IUserService{
 
 
         user.setAddress(updateUserDTO.getAddress());
+        user.setZipCode(updateUserDTO.getZipCode());
+        user.setPrefecture(updateUserDTO.getPrefecture());
+        user.setCity(updateUserDTO.getCity());
+        user.setAddressLine1(updateUserDTO.getAddressLine1());
+        user.setAddressLine2(updateUserDTO.getAddressLine2());
 
         if(phoneChange){
 
@@ -192,6 +202,11 @@ public class UserService implements IUserService{
         return UpdateUserResponse.builder()
                 .fullName(user.getFullName())
                 .address(user.getAddress())
+                .zipCode(user.getZipCode())
+                .prefecture((user.getPrefecture()))
+                .city(user.getCity())
+                .addressLine1(user.getAddressLine1())
+                .addressLine2(user.getAddressLine2())
                 .phoneNumber(user.getPhoneNumber())
                 .dateOfBirth(user.getDateOfBirth())
                 .build();

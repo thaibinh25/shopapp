@@ -39,6 +39,22 @@ public class Order {
     @Column(name = "address", length = 200, nullable = true)
     private String address;
 
+    @Column(name = "zip_code", length = 10)
+    private String zipCode;
+
+    @Column(name = "prefecture", length = 100)
+    private String prefecture;
+
+    @Column(name = "city", length = 100)
+    private String city;
+
+    @Column(name = "address_line1", length = 255)
+    private String addressLine1;
+
+    @Column(name = "address_line2", length = 255)
+    private String addressLine2;
+
+
     @Column(name = "note", length = 100)
     private String note;
 

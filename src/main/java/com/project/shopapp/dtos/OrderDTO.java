@@ -33,6 +33,21 @@ public class OrderDTO {
 
     @JsonProperty("address")
     private String address;
+    @JsonProperty("zip_code")
+    private String zipCode;
+
+    @JsonProperty("prefecture")
+    private String prefecture;
+
+    @JsonProperty("city")
+    private String city;
+
+    @JsonProperty("address_line1")
+    private String addressLine1;
+
+    @JsonProperty("address_line2")
+    private String addressLine2;
+
 
     private String note;
 

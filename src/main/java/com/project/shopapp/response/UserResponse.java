@@ -27,6 +27,21 @@ public class UserResponse {
     @JsonProperty("address")
     private String address;
 
+    @JsonProperty("zip_code")
+    private String zipCode;
+
+    @JsonProperty("prefecture")
+    private String prefecture;
+
+    @JsonProperty("city")
+    private String city;
+
+    @JsonProperty("address_line1")
+    private String addressLine1;
+
+    @JsonProperty("address_line2")
+    private String addressLine2;
+
     @JsonProperty("is_active")
     private Boolean active;
 
@@ -48,6 +63,11 @@ public class UserResponse {
                 .fullName(user.getFullName())
                 .phoneNumber(user.getPhoneNumber())
                 .address(user.getAddress())
+                .zipCode(user.getZipCode())
+                .prefecture(user.getPrefecture())
+                .city(user.getCity())
+                .addressLine1(user.getAddressLine1())
+                .addressLine2(user.getAddressLine2())
                 .active(user.getActive())
                 .dateOfBirth(user.getDateOfBirth())
                 .facebookAccountId(user.getFacebookAccountId())
