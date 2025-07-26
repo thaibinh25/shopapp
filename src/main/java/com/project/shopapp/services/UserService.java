@@ -148,11 +148,18 @@ public class UserService implements IUserService{
         User user = userRepository.findById(userId).orElseThrow(
                 ()-> new DataNotFoundException("user not found"));
         boolean phoneChange = false;
+        boolean emailChange = false;
 
         if (user.getPhoneNumber() == null) {
             phoneChange = true;
         }else {
             phoneChange = !user.getPhoneNumber().equals(updateUserDTO.getPhoneNumber());
+        }
+
+        if (user.getEmail() == null) {
+            emailChange = true;
+        }else {
+            emailChange = !user.getEmail().equals(updateUserDTO.getEmail());
         }
 
 
@@ -162,6 +169,15 @@ public class UserService implements IUserService{
         user.setCity(updateUserDTO.getCity());
         user.setAddressLine1(updateUserDTO.getAddressLine1());
         user.setAddressLine2(updateUserDTO.getAddressLine2());
+        if (emailChange){
+            Optional<User> existingUserByEmail = userRepository.findByEmail(updateUserDTO.getEmail());
+            if (existingUserByEmail.isPresent() && !existingUserByEmail.get().getId().equals(userId)){
+                throw  new IllegalArgumentException("email này đã được sử dụng");
+            }
+
+            user.setEmail(updateUserDTO.getEmail());
+        }
+
 
         if(phoneChange){
 
@@ -174,9 +190,13 @@ public class UserService implements IUserService{
             userRepository.save(user);
             return jwtTonkenUtil.generateToken(user);
         }else {
-            userRepository.save(user);
+
             return null;
         }
+
+
+
+
 
     }
 

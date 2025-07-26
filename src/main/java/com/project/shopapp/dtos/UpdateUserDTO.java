@@ -37,6 +37,8 @@ public class UpdateUserDTO {
     @JsonProperty("phone_number")
     private String phoneNumber;
 
+    @JsonProperty("email")
+    private String email;
 
 
 }

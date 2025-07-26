@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByPhoneNumber(String phoneNumber);
 
+    Optional<User> findByEmail(String email);
+
     @Query("SELECT u FROM User u WHERE u.role.name = 'user'")
     List<User> findAllUsersWithUserRole();
 
