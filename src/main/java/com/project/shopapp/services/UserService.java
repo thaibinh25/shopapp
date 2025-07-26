@@ -57,6 +57,7 @@ public class UserService implements IUserService{
         //convert userDTO => user
         User newUser = User.builder()
                 .fullName(userDTO.getFullName())
+                .email(userDTO.getEmail())
                 .phoneNumber(userDTO.getPhoneNumber())
                 .password(userDTO.getPassword())
                 .address(userDTO.getAddress())
@@ -201,6 +202,7 @@ public class UserService implements IUserService{
                 ()-> new DataNotFoundException("User not found"));
         return UpdateUserResponse.builder()
                 .fullName(user.getFullName())
+                .email(user.getEmail())
                 .address(user.getAddress())
                 .zipCode(user.getZipCode())
                 .prefecture((user.getPrefecture()))

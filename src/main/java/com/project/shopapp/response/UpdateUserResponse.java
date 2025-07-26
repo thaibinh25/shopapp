@@ -12,6 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class UpdateUserResponse {
     private String fullName;
+
+    private String email;
+
     @JsonProperty("phone_number")
     private String phoneNumber;
 
