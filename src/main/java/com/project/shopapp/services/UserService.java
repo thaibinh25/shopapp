@@ -147,56 +147,68 @@ public class UserService implements IUserService{
     public String updateProfile(Long userId, UpdateUserDTO updateUserDTO) throws Exception {
         User user = userRepository.findById(userId).orElseThrow(
                 ()-> new DataNotFoundException("user not found"));
-        boolean phoneChange = false;
-        boolean emailChange = false;
-
-        if (user.getPhoneNumber() == null) {
-            phoneChange = true;
-        }else {
-            phoneChange = !user.getPhoneNumber().equals(updateUserDTO.getPhoneNumber());
+        // Cập nhật các trường không cần điều kiện
+        if (updateUserDTO.getFullName() != null && !updateUserDTO.getFullName().isBlank()) {
+            user.setFullName(updateUserDTO.getFullName());
         }
 
-        if (user.getEmail() == null) {
-            emailChange = true;
-        }else {
-            emailChange = !user.getEmail().equals(updateUserDTO.getEmail());
+        if (updateUserDTO.getDateOfBirth() != null) {
+            user.setDateOfBirth(updateUserDTO.getDateOfBirth());
+        }
+
+        if (updateUserDTO.getAddress() != null && !updateUserDTO.getAddress().isBlank()) {
+            user.setAddress(updateUserDTO.getAddress());
+        }
+
+        if (updateUserDTO.getZipCode() != null && !updateUserDTO.getZipCode().isBlank()) {
+            user.setZipCode(updateUserDTO.getZipCode());
+        }
+
+        if (updateUserDTO.getPrefecture() != null && !updateUserDTO.getPrefecture().isBlank()) {
+            user.setPrefecture(updateUserDTO.getPrefecture());
+        }
+
+        if (updateUserDTO.getCity() != null && !updateUserDTO.getCity().isBlank()) {
+            user.setCity(updateUserDTO.getCity());
+        }
+
+        if (updateUserDTO.getAddressLine1() != null && !updateUserDTO.getAddressLine1().isBlank()) {
+            user.setAddressLine1(updateUserDTO.getAddressLine1());
+        }
+
+        if (updateUserDTO.getAddressLine2() != null ) {
+            user.setAddressLine2(updateUserDTO.getAddressLine2());
         }
 
 
-        user.setAddress(updateUserDTO.getAddress());
-        user.setZipCode(updateUserDTO.getZipCode());
-        user.setPrefecture(updateUserDTO.getPrefecture());
-        user.setCity(updateUserDTO.getCity());
-        user.setAddressLine1(updateUserDTO.getAddressLine1());
-        user.setAddressLine2(updateUserDTO.getAddressLine2());
-        if (emailChange){
-            Optional<User> existingUserByEmail = userRepository.findByEmail(updateUserDTO.getEmail());
-            if (existingUserByEmail.isPresent() && !existingUserByEmail.get().getId().equals(userId)){
-                throw  new IllegalArgumentException("email này đã được sử dụng");
+        // Kiểm tra thay đổi email
+        if (updateUserDTO.getEmail() != null) {
+            boolean emailChange = user.getEmail() == null || !user.getEmail().equals(updateUserDTO.getEmail());
+            if (emailChange) {
+                Optional<User> existingUserByEmail = userRepository.findByEmail(updateUserDTO.getEmail());
+                if (existingUserByEmail.isPresent() && !existingUserByEmail.get().getId().equals(userId)) {
+                    throw new IllegalArgumentException("Email này đã được sử dụng");
+                }
+                user.setEmail(updateUserDTO.getEmail());
             }
-
-            user.setEmail(updateUserDTO.getEmail());
         }
 
-
-        if(phoneChange){
-
-            Optional<User> existingUser = userRepository.findByPhoneNumber(updateUserDTO.getPhoneNumber());
-            if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
-                throw new IllegalArgumentException("Số điện thoại này đã được sử dụng bởi người dùng khác.");
+        // Kiểm tra thay đổi số điện thoại
+        if (updateUserDTO.getPhoneNumber() != null) {
+            boolean phoneChange = user.getPhoneNumber() == null || !user.getPhoneNumber().equals(updateUserDTO.getPhoneNumber());
+            if (phoneChange) {
+                Optional<User> existingUser = userRepository.findByPhoneNumber(updateUserDTO.getPhoneNumber());
+                if (existingUser.isPresent() && !existingUser.get().getId().equals(userId)) {
+                    throw new IllegalArgumentException("Số điện thoại này đã được sử dụng bởi người dùng khác.");
+                }
+                user.setPhoneNumber(updateUserDTO.getPhoneNumber());
+                userRepository.save(user);
+                return jwtTonkenUtil.generateToken(user); // chỉ tạo lại token nếu đổi số điện thoại (username)
             }
-
-            user.setPhoneNumber(updateUserDTO.getPhoneNumber());
-            userRepository.save(user);
-            return jwtTonkenUtil.generateToken(user);
-        }else {
-            userRepository.save(user);
-            return null;
         }
 
-
-
-
+        userRepository.save(user); // luôn lưu lại user nếu có bất kỳ thay đổi nào khác
+        return null; // không cần trả về token nếu không đổi số điện thoại
 
     }
 

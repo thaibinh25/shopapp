@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,6 +16,15 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserDTO {
+
+    @JsonProperty("fullname")
+    private String fullName;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonProperty("date_of_birth")
+    private Date dateOfBirth;
+
 
     private String address;
 
