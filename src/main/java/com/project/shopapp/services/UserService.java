@@ -190,7 +190,7 @@ public class UserService implements IUserService{
             userRepository.save(user);
             return jwtTonkenUtil.generateToken(user);
         }else {
-
+            userRepository.save(user);
             return null;
         }
 
