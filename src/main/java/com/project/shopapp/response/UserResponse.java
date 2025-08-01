@@ -61,6 +61,8 @@ public class UserResponse {
     @JsonProperty("role")
     private com.project.shopapp.models.Role role;
 
+    private boolean hasPassword;
+
     public static UserResponse fromUser(com.project.shopapp.models.User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -78,6 +80,7 @@ public class UserResponse {
                 .facebookAccountId(user.getFacebookAccountId())
                 .googleAccountId(user.getGoogleAccountId())
                 .role(user.getRole())
+                .hasPassword(user.getPassword() != null && !user.getPassword().isBlank())
                 .build();
     }
 }
