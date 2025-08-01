@@ -144,6 +144,7 @@ public class UserService implements IUserService{
     }
 
     @Override
+    @Transactional
     public String updateProfile(Long userId, UpdateUserDTO updateUserDTO) throws Exception {
         User user = userRepository.findById(userId).orElseThrow(
                 ()-> new DataNotFoundException("user not found"));
@@ -215,17 +216,32 @@ public class UserService implements IUserService{
     @Override
     @Transactional
     public void changePassword(String phoneNumber, ChangePasswordRequest request) throws DataNotFoundException {
+        User user = userRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
 
-        User user = userRepository.findByPhoneNumber(phoneNumber).orElseThrow(
-                ()-> new DataNotFoundException("User not found"));
-        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())){
-            throw new RuntimeException("Current password is incorrect!");
+        String currentPassword = request.getCurrentPassword();
+        String newPassword = request.getNewPassword();
 
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            // Trường hợp đã có mật khẩu => yêu cầu nhập đúng mật khẩu cũ
+            if (currentPassword == null || currentPassword.isBlank()) {
+                throw new RuntimeException("Vui lòng nhập mật khẩu hiện tại.");
+            }
+
+            if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+                throw new RuntimeException("Mật khẩu hiện tại không đúng.");
+            }
         }
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        // Trường hợp chưa có mật khẩu, hoặc đã xác thực đúng => cập nhật mật khẩu mới
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new RuntimeException("Mật khẩu mới không được để trống.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
+    }
 
-        }
 
     @Override
     @Transactional
