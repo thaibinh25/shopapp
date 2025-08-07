@@ -13,9 +13,10 @@ import java.util.List;
 public interface IUserService {
     List<User> getAllUsers();
     User createUser (UserDTO userDTO) throws Exception;
-    String login(String phoneNumber, String password, Long roleId) throws Exception;
 
     //User updateUser(Long userId, UpdateUserDTO updateUserDTO) throws Exception;
+
+    User login(String phoneNumber, String password) throws Exception;
 
     User getUserDetailsFromToken(String token) throws Exception;
 

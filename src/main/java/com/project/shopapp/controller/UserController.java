@@ -1,5 +1,6 @@
 package com.project.shopapp.controller;
 
+import com.project.shopapp.components.JwtTonkenUtil;
 import com.project.shopapp.dtos.ChangePasswordRequest;
 import com.project.shopapp.dtos.UpdateUserDTO;
 import com.project.shopapp.dtos.UserDTO;
@@ -31,6 +32,7 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
     private final LocalizationUtils localizationUtils;
+    private final JwtTonkenUtil jwtTonkenUtil;
 
     @GetMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -85,14 +87,13 @@ public class UserController {
     ) throws Exception {
         //Kiểm tra thông tin đăng nhập và sinh token
         try {
-              String token = userService.login(
-                    userLoginDTO.getPhoneNumber(),
-                    userLoginDTO.getPassword(),
-                    userLoginDTO.getRoleId() == null ? 1 : userLoginDTO.getRoleId());
+            User user = userService.login(userLoginDTO.getPhoneNumber(), userLoginDTO.getPassword());
+            String token = jwtTonkenUtil.generateToken(user);
             //Trả về token trong  response
             return ResponseEntity.ok(LoginResponse.builder()
                     .message(localizationUtils.getLocalizedMessage(MessageKeys.LOGIN_SUCCESSFULLY))
                     .token(token)
+                    .role(user.getRole().getName())
                     .build());
         }catch (Exception e){
             return   ResponseEntity.badRequest().body(

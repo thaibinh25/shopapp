@@ -89,7 +89,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public String login(String phoneNumber, String password, Long roleId) throws Exception {
+    public User login(String phoneNumber, String password) throws Exception {
 
         Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
         if(optionalUser.isEmpty()){
@@ -109,10 +109,12 @@ public class UserService implements IUserService{
             }
         }
 
-        Optional<Role> optionalRole = roleRepository.findById(roleId);
-        if (optionalRole.isEmpty() || !roleId.equals(existingUser.getRole().getId())){
+        Role userRole = existingUser.getRole();
+        if (userRole == null){
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.ROLE_DOES_NOT_EXISTS));
         }
+
+
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
           phoneNumber,password,
@@ -120,7 +122,7 @@ public class UserService implements IUserService{
         );
         //authenticate with java Spring security
         authenticationManager.authenticate(authenticationToken);
-        return jwtTonkenUtil.generateToken(existingUser);
+        return existingUser;
     }
 
 
