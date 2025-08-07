@@ -73,8 +73,13 @@ public class UserService implements IUserService{
         newUser.setRole(role);
 
         //kiểm tra nếu có accountId, không thi yêu cầu pasword
-        if ((userDTO.getFacebookAccountId() == null )
-                && (userDTO.getGoogleAccountId() == null )) {
+        String fbId = userDTO.getFacebookAccountId();
+        String ggId = userDTO.getGoogleAccountId();
+
+        boolean isSocial = (fbId != null && !fbId.trim().isEmpty())
+                || (ggId != null && !ggId.trim().isEmpty());
+
+        if (isSocial) {
             String password = userDTO.getPassword();
             String encodePassword = passwordEncoder.encode(password);
             newUser.setPassword(encodePassword);
