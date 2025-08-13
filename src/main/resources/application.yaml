@@ -66,7 +66,7 @@ stripe:
 google:
   client-id: ${GOOGLE_CLIENT_ID}
   client-secret: ${GOOGLE_CLIENT_SECRET}
-  redirect-uri: https://ffc5791377bf.ngrok-free.app/oauth2/callback
+  redirect-uri: https://e7b5c4fe5cd5.ngrok-free.app/oauth2/callback
 
 aws:
   s3:
